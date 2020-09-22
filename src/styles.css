@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+.errorMsg {
+  color: red;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+

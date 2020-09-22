@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="card border-light" *ngIf="recipe">
+    <h2 class="card-title text-center m-2">{{recipe.name}}</h2>
+    <img [src]="recipe.filePath" class="img-fluid" alt="">
+    <div class="card-body mt-4">
+      <div class="text-center">
+        <table class="table table-sm">
+          <thead class="thead-dark">
+            <th>Ingredients</th>
+            <th>Quantity</th>
+            <th>Total KCal</th>
+          </thead>
+          <tr *ngFor="let item of recipe.ingredients">
+            <td>{{item[0].name}}</td>
+            <td>{{item[1]}} grs</td>
+            <td>{{item[2]}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="mt-4">
+        <h4 class="mb-4">Preparation</h4>
+        <p *ngFor="let item of recipe.preparation" >
+          {{item}}
+        </p>
+      </div>
+    </div>
+    <div class="text-center m-4">
+      <button (click)="editRecipe(recipe._id)">Edit recipe</button>
+      <button (click)="deleteRecipe(recipe._id)">Delete Recipe</button>
+    </div>
+  </div>
+</div>
+<!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis eius earum doloribus dolorem numquam ex aperiam sapiente eaque amet, magni maiores inventore laborum facilis quae provident fuga hic iusto incidunt nulla quis voluptatem repellendus vero obcaecati. Maiores neque vel repellat ad sequi autem asperiores rem, iste optio, nobis vero blanditiis!
+
+Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro, aperiam facilis! Enim quibusdam inventore temporibus, iure vitae cupiditate quam ea laboriosam eaque adipisci. Iusto dolores exercitationem quisquam. Delectus, quidem omnis! -->
