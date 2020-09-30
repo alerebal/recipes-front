@@ -1,27 +1,31 @@
-<div class="container">
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <div class="form-control">
-      <label>Ingredient's name: </label>
-      <input type="text" formControlName="name" required>
-    </div>
-    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMsg">
-      <div *ngIf="name.errors.required">
-        Name is required
-      </div >
-    </div>
-    <div class="form-control">
-      <label>Kcal per 100 grs: </label>
-      <input type="text" formControlName="kcal" required>
-    </div>
-    <div *ngIf="kcal.invalid && (kcal.dirty || kcal.touched)" class="errorMsg">
-      <div *ngIf="kcal.errors.required">
-        KCal is required
-      </div >
-      <div *ngIf="kcal.errors.notNumber">
-        KCal must be a number
-      </div >
-    </div >
-    <button type="submit" [disabled]="!productForm.valid">Add new Ingredient</button>
-  </form>
+<div class="container mt-4">
+      <div class="card border-light">
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <div class="form-group bg-transparent">
+            <label>Ingredient's name: </label>
+            <input type="text" formControlName="name"  required>
+          </div>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMsg">
+            <div *ngIf="name.errors.required">
+              Name is required
+            </div >
+          </div>
+          <div class="form-group bg-transparent">
+            <label>Kcal per 100 grs: </label>
+            <input type="text" formControlName="kcal" required>
+          </div>
+          <div *ngIf="kcal.invalid && (kcal.dirty || kcal.touched)" class="errorMsg">
+            <div *ngIf="kcal.errors.required">
+              KCal is required
+            </div >
+            <div *ngIf="kcal.errors.notNumber">
+              KCal must be a number
+            </div >
+          </div >
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm m-2" [disabled]="!productForm.valid">Add new Ingredient</button>
+          </div>
+        </form>
+      </div>
 </div>
 

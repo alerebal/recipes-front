@@ -5,6 +5,8 @@ import { HomeComponent } from './components/home/home.component';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { RecipeViewComponent } from './components/recipe-view/recipe-view.component';
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
+import { ProductsComponent } from './components/products/products.component';
+
 
 
 const routes: Routes = [
@@ -12,7 +14,8 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'recipes', component: RecipesComponent},
   {path: 'recipeView/:id', component: RecipeViewComponent},
-  {path: 'recipeEdit/:id', component: RecipeEditComponent}
+  {path: 'recipeEdit/:id', component: RecipeEditComponent},
+  {path: 'products', component: ProductsComponent}
 ];
 
 @NgModule({

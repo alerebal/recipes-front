@@ -1,4 +1,19 @@
-input {
+/* input {
   width: 50%;
   text-align: center;
+  margin: auto;
+} */
+
+img {
+  cursor: pointer;
 }
+
+.inputIngre {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* #nameIngre {
+} */
+
+

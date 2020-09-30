@@ -13,6 +13,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { RecipeViewComponent } from './components/recipe-view/recipe-view.component';
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
+import { ProductsComponent } from './components/products/products.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
@@ -26,7 +28,9 @@ import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.compon
     NavigationComponent,
     RecipesComponent,
     RecipeViewComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    ProductsComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

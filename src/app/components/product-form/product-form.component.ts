@@ -18,6 +18,7 @@ export class ProductFormComponent implements OnInit {
     kcal: this.fb.control('', [Validators.required, validatorNumber(/[^0-9]/)])
   });
   @Output() productEdit = new EventEmitter<boolean>();
+  @Output() newProductName = new EventEmitter<string>();
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +34,9 @@ export class ProductFormComponent implements OnInit {
     const kcal = productSend.kcal;
     this.productService.createProduct({ name, kcal }).subscribe(res => {
       this.productEdit.emit(true);
-    });
+      this.newProductName.emit(res.name);
+    },
+    err => console.log('fallo'));
   }
 
   get name() {

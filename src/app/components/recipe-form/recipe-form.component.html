@@ -1,79 +1,145 @@
-<form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+<div class="container">
+  <div class="row text-center">
+    <div class="col-md-8 col-lg-6 m-auto p-0">
+      <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+        <h3>Recipe form</h3>
+        <!--Name form-->
+        <div class="form-group">
+          <div><label>Name</label>
+          </div>
+          <input formControlName="name" required />
+          <div *ngIf="name.invalid && (name.dirty || name.touched)">
+            <div *ngIf="name.errors.required" class="errorMsg">
+              Name is required
+            </div>
+          </div>
+        </div>
+        <!--Servings form-->
+        <div class="form-group">
+          <div><label>Servings <input formControlName="servings" id="servings" required></label></div>
+          <div *ngIf="servings.invalid && (servings.dirty || servings.touched)">
+            <div class="errorMsg" *ngIf="servings.errors.required">
+              Servings are required
+            </div>
+          </div>
+        </div>
+        <!--Ingredients form-->
+        <h4>Ingredients</h4>
+        <p>Choose the ingredients from the list</p>
+        <div class="form-group">
+          <div formArrayName="ingreServer">
+            <select
+              [(ngModel)]="ingredient"
+              [ngModelOptions]="{ standalone: true }"
+              class="text-center"
+            >
+              <ng-container *ngFor="let item of ingredients" >
+                <option [ngValue]="item" >
+                  {{ item.name }} - {{ item.kcal }} kcal
+                </option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label>Name: </label>
-    <input formControlName="name" class="form-control" required>
-    <div *ngIf="name.invalid && (name.dirty || name.touched)" >
-      <div *ngIf="name.errors.required" class="errorMsg">
-        Name is required
-      </div >
-    </div >
-  </div>
+        <div class="form-group">
+          <label>Weight (grams)
+            <input
+            type="text"
+            id="weight"
+            formControlName="weight"
+          /></label>
+          <div
+            *ngIf="weight.invalid && (weight.touched || weight.dirty)"
+            class="errorMsg"
+          >
+            <div *ngIf="weight.errors.notNumber">Weight sould be a number</div>
+          </div>
+          <div class="errorMsg">
+            {{ msg }}
+          </div>
+        </div>
 
-  <h4>Ingredients</h4>
-  <p>Choose the ingredients from the list</p>
-  <div class="form-group">
-    <div formArrayName="ingreServer">
-      <select [(ngModel)]="ingredient" [ngModelOptions]="{standalone: true}" >
-        <ng-container *ngFor="let item of ingredients">
-          <option [ngValue]="item" >
-            {{item.name}} - {{item.kcal}} kcal
-          </option>
-        </ng-container>
-      </select>
+        <div class="form-group">
+          <button type="button" class="btn btn-primary btn-sm mb-2" (click)="addProduct()">Add Ingredient</button>
+        </div>
+
+        <!--Create new ingredient-->
+        <hr />
+        <p class="p-2">
+          If the ingredient you need is not on the list, add a new ingredient to
+          the list by clicking the button
+        </p>
+        <p>
+          <button type="button" class="btn btn-primary btn-sm mb-2" (click)="productEdit = !productEdit">
+            <span *ngIf="!productEdit">New Ingredient</span>
+            <span *ngIf="productEdit">Back</span>
+          </button>
+
+          <app-product-form
+            *ngIf="productEdit"
+            (productEdit)="newProductAdd($event)"
+          ></app-product-form>
+        </p>
+
+        <hr />
+        <!--List of selected ingredients-->
+        <h4>List of ingredients</h4>
+        <div class="noIngre" *ngIf="listIngreEmpty">
+          <p>No ingredients selected yet</p>
+        </div>
+          <table class="table table-sm" *ngIf="!listIngreEmpty">
+            <thead class="thead-dark">
+              <tr>
+                <th>Ingredient</th>
+                <th>Quantity</th>
+                <th>K-Calories</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let ingre of listIngredients; let i = index">
+              <tr>
+                <td>{{ingre[0].name}}</td>
+                <td>{{ingre[1]}}</td>
+                <td>{{ingre[2]}}</td>
+                <td><button type="button" (click)="deleteIngreList(i)" class="btn btn-danger btn-sm m-1">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+        <hr />
+        <!--Preparation form-->
+        <h4>Preparation</h4>
+        <div *ngIf="preparation.invalid && (preparation.touched || preparation.dirty)" class="mb-2">
+          <div class="errorMsg" *ngIf="preparation.errors">
+            Preparation is required
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea
+            formControlName="preparation"
+            cols="50"
+            rows="10"
+            required
+          ></textarea>
+        </div>
+        <!--Image form-->
+        <div class="form-group">
+          <input
+            type="file"
+            class="d-none"
+            (change)="onPhotoSelected($event)"
+            #image
+          />
+          <img
+            [src]="photoSelected || 'assets/no-image-icon.png'"
+            class="img-fluid"
+            (click)="image.click()"
+          />
+        </div>
+        <div class="text-center">
+          <button [disabled]="!recipeForm.valid" class="btn btn-primary btn-sm" >Save Recipe</button>
+        </div>
+      </form>
     </div>
   </div>
-
-  <div class="form-group">
-    <input type="text" class="form-control" formControlName="weight" placeholder="Weight">
-    <div *ngIf="weight.invalid && (weight.touched || weight.dirty)" class="errorMsg">
-      <!-- <div *ngIf="weight.errors.required">
-        weight is required
-      </div> -->
-      <div *ngIf="weight.errors.notNumber">
-        weight sould be a number
-      </div>
-    </div >
-  </div>
-
-  <div class="errorMsg">
-    {{msg}}
-  </div>
-
-  <div class="form-group">
-    <button type="button" (click)="addProduct()">Add Ingredient</button>
-  </div>
-
-  <hr>
-
-  <p>If the ingredient you need is not on the list, add a new ingredient to the list by clicking the button<p>
-  <button type="button" (click)="productEdit = !productEdit">
-    <span *ngIf="!productEdit">New Ingredient</span>
-    <span *ngIf="productEdit">Back</span>
-  </button>
-
-  <app-product-form *ngIf="productEdit" (productEdit)="newProductAdd($event)"></app-product-form>
-
-  <hr>
-
-  <h4>List of ingredients</h4>
-  <ng-container *ngFor="let ingre of listIngredients">
-    <li>{{ingre[0].name}} - {{ingre[1]}} grs - {{ingre[2]}} kcal</li>
-  </ng-container>
-  <h4>Preparation</h4>
-  <div class="form-group">
-    <textarea formControlName="preparation" cols="50" rows="10" ></textarea>
-  </div>
-
-  <div class="form-group" >
-    <label>Image: </label>
-    <input type="file" class="hidden" (change)="onPhotoSelected($event)" #image>
-    <img [src]="photoSelected || 'assets/no-image-icon.png'" class="img-fluid" (click)="image.click()">
-
-  </div>
-  <button [disabled]="!recipeForm.valid">Save Recipe</button>
-</form>
-
-
-
-
+</div>

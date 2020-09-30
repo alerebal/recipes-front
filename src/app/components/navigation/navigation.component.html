@@ -1,5 +1,20 @@
-<div class="container">
-  <a [routerLink]="['/']" routerLinkActive="router-link-active" >Home</a>
-  <a [routerLink]="['/recipes']" routerLinkActive="router-link-active" >All reicpes</a>
-  <a [routerLink]="['/recipeForm']" routerLinkActive="router-link-active" >New Recipe</a>
-</div>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" [routerLink]="['/']" routerLinkActive="active">Healty Recipes</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/recipes']" routerLinkActive="active">Recipes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/recipeForm']" routerLinkActive="active">New Recipe</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/products']" routerLinkActive="active"  >Ingredients</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+

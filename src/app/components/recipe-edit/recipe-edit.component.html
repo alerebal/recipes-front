@@ -1,73 +1,94 @@
 <div class="container" *ngIf="recipe" >
-  <form [formGroup]="editForm" (ngSubmit)="onSubmit(name.value, recipe._id)">
-    <div class="form-group">
-        <input class="form-control" [value]="recipe.name" placeholder="Name" #name>
-    </div>
-    <!--ingredients-->
-    <div class="form-group">
-      <label>Ingredients: </label>
-      <div style="width: 70%;" class="text-center">
-        <table class="table table-sm">
-          <thead class="thead-dark">
-            <th>Ingredients</th>
-            <th>Quantity</th>
-            <th>KCal</th>
-            <th>Edit</th>
-          </thead>
-          <tr *ngFor="let item of ingredientsList; let i = index">
-            <td #ingre>{{item[0].name}}</td>
-            <td ><input [value]="item[1]"  #newWeight></td>
-            <td>{{item[2]}}</td>
-            <td>
-              <button type="button" class="btn btn-primary btn-sm mr-2" (click)='onEdit(i, newWeight.value, item[0].kcal);'>Change</button>
-              <button type="button" class="btn btn-danger btn-sm" (click)='onDelete(i)'>Delete</button>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <div>
-        Add ingredients to the list
-        <div formArrayName="ingreServer">
-          <select [(ngModel)]="ingredient" [ngModelOptions]="{standalone: true}" >
-            <ng-container *ngFor="let item of ingreServerList">
-              <option [ngValue]="item" >
-                {{item.name}} - {{item.kcal}} kcal
-              </option>
-            </ng-container>
-          </select>
-        </div>
+  <div class="row text-center">
+    <div class="col-md-8 col-lg-6 m-auto p-0">
+      <h3>Edit form</h3>
+      <form [formGroup]="editForm" >
+        <!--name-->
         <div class="form-group">
-            <input class="form-control" placeholder="Weight" #weight>
+            <input [value]="recipe.name" placeholder="Name" #name>
         </div>
+        <!--servings-->
         <div class="form-group">
-          <button type="button" (click)="addIngredient(weight.value)">Add ingredient</button>
+          <label>Servings <input type="number" [value]="recipe.servings" id="servings" #servings></label>
         </div>
-        <!--add new ingredient-->
-        <hr>
-        <p>If the ingredient you need is not on the list, add a new ingredient to the list by clicking the button</p>
-        <button type="button" (click)="productEdit = !productEdit">
-          <span *ngIf="!productEdit">New Ingredient</span>
-          <span *ngIf="productEdit">Back</span>
-        </button>
+        <!--list of ingredients-->
+        <div class="form-group">
+          <div>
+            <table class="table table-striped table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Ingredients</th>
+                  <th>Quantity</th>
+                  <!-- <th>KCal</th>
+                  <th></th> -->
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ingredientsList; let i = index" id="nameIngre" >
+                  <td #ingre>{{item[0].name}}</td>
+                  <td ><input [value]="item[1]"  #newWeight (change)='onEdit(i, newWeight.value, item[0].kcal);'></td>
+                  <!-- <td>{{item[2]}}</td> -->
+                  <!-- <td>
+                    <button style="display: none;" type="button" class="btn btn-primary btn-sm mr-2" #modify (click)='onEdit(i, newWeight.value, item[0].kcal);'>Change</button>
+                  </td> -->
+                  <td>
+                    <button type="button" class="btn btn-danger btn-sm" (click)='onDelete(i)'>Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--Add product to the list of products-->
+          <div>
+            Add ingredients to the list
+            <div formArrayName="ingreServer">
+              <select [(ngModel)]="ingredient" [ngModelOptions]="{standalone: true}" class="inputIngre">
+                <ng-container *ngFor="let item of ingreServerList" >
+                  <option [ngValue]="item" >
+                    {{item.name}} - {{item.kcal}} kcal
+                  </option>
+                </ng-container>
+              </select>
+            </div>
+            <div class="errorMsg">
+              {{msg}}
+            </div>
+            <div class="form-group">
+                <label >Weight (grams) <input id="weight" #weight></label>
+            </div>
 
-        <app-product-form *ngIf="productEdit" (productEdit)="newProductAdd($event)"></app-product-form>
-        <hr>
-      </div>
-    </div>
+            <div class="form-group">
+              <button type="button"  class="btn btn-primary btn-sm" (click)="addIngredient(weight.value)">Add ingredient</button>
+            </div>
+            <!--add new ingredient-->
+            <hr>
+            <p>If the ingredient you need is not on the list, add a new ingredient to the list by clicking the button</p>
+            <button type="button" class="btn btn-primary btn-sm" (click)="productEdit = !productEdit">
+              <span *ngIf="!productEdit">New Ingredient</span>
+              <span *ngIf="productEdit">Back</span>
+            </button>
 
-    <!--Preparation-->
-    <div class="form-group" >
-      <div *ngFor="let item of preparation; let i = index">
-        <textarea class="form-control" [value]="item" (change)="changePara(prepa.value, i)" #prepa></textarea>
-      </div>
-    </div>
+            <app-product-form *ngIf="productEdit" (productEdit)="newProductAdd($event)"></app-product-form>
+            <hr>
+          </div>
+        </div>
 
-    <!--Image-->
-    <div class="form-group">
-      <input type="file" class="hidden" (change)="onPhotoSelected($event)" #image>
-      <img [src]="photoSelected || 'assets/no-image-icon.png'" class="img-fluid" (click)="image.click()">
+        <!--Preparation-->
+        <div class="form-group" >
+          <div *ngFor="let item of preparation; let i = index" >
+            <textarea class="form-control" [value]="item" (change)="changePara(prepa.value, i)" #prepa></textarea>
+          </div>
+        </div>
+
+        <!--Image-->
+        <div class="form-group">
+          <input type="file" class="d-none" (change)="onPhotoSelected($event)" #image>
+          <img [src]="photoSelected || 'assets/no-image-icon.png'" class="img-fluid" (click)="image.click()">
+        </div>
+        <button [disabled]="!editForm.valid" type="button" class="btn btn-primary btn-sm" (click)="onSubmit(name.value, servings.value, recipe._id)" >Save changes</button>
+      </form>
     </div>
-    <button [disabled]="!editForm.valid">Save changes</button>
-  </form>
+  </div>
+
 </div>

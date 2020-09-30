@@ -1,0 +1,77 @@
+<div class="container text-center">
+  <div class="row">
+    <div class="m-auto">
+      <h5>This is the list of all the ingredients</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="m-auto">
+      <p>
+        You can add a new ingredient
+        <span style="font-size: 1.15em; font-weight: bold"
+          ><a (click)="newIngredient = !newIngredient">here</a></span
+        >
+      </p>
+    </div>
+  </div>
+  <!--Alerts-->
+  <div class="alert alert-success alert-dismissible fade show " role="alert" *ngIf="ingredientAdded">Ingredient <span style="font-size: 1.1em; font-weight: bold;">{{ingredient | lowercase}}</span> has been added
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="alert alert-danger alert-dismissible fade show " role="alert" *ngIf="ingredientDeleted">Ingredient <span style="font-size: 1.1em; font-weight: bold;">{{ingredient | lowercase}}</span> has been removed
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <!--Add new product-->
+  <div class="row">
+    <div class="col m-auto" *ngIf="newIngredient">
+      <hr />
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        (click)="newIngredient = !newIngredient">
+        Cancel
+      </button>
+      <app-product-form
+        (productEdit)="onProductEdit($event)" (newProductName)="onNewProduct($event)"
+      ></app-product-form>
+      <hr />
+    </div>
+  </div>
+
+
+  <!--List of products-->
+  <div class="row mt-4">
+    <div class="col-md-8 col-lg-6 m-auto  p-0">
+      <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+          <th>Ingredient</th>
+          <th>KCal 100 grs</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ingredients">
+            <td>
+              {{ item.name }}
+            </td>
+            <td>
+              {{ item.kcal }}
+            </td>
+            <td>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="onDelete(item._id, item.name)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

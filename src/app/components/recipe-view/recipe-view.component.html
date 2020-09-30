@@ -1,32 +1,45 @@
 <div class="container">
-  <div class="card border-light" *ngIf="recipe">
-    <h2 class="card-title text-center m-2">{{recipe.name}}</h2>
-    <img [src]="recipe.filePath" class="img-fluid" alt="">
-    <div class="card-body mt-4">
-      <div class="text-center">
-        <table class="table table-sm">
-          <thead class="thead-dark">
-            <th>Ingredients</th>
-            <th>Quantity</th>
-            <th>Total KCal</th>
-          </thead>
-          <tr *ngFor="let item of recipe.ingredients">
-            <td>{{item[0].name}}</td>
-            <td>{{item[1]}} grs</td>
-            <td>{{item[2]}}</td>
-          </tr>
-        </table>
+  <div class="row">
+    <div class="col-md-8 col-lg-6 m-auto p-0">
+      <div class="card border-light text-center" *ngIf="recipe">
+        <h2 class="card-title">{{recipe.name}}</h2>
+        <img [src]="recipe.filePath" class="img-fluid" *ngIf="recipe.filePath">
+        <div class="card-body mt-4 p-0">
+          <h4 class="m-4">Ingredients for {{servings}} servings</h4>
+          <div>
+          <!--Change servings-->
+            <label class="mb-4">Change servings here <input type="number" [value]="servings" id="servings" #serChange>
+            <button (click)="servingsChange(serChange.value)" id="change" class="btn btn-primary btn-sm">Change</button>
+            </label>
+          </div>
+          <!--Ingredients list-->
+          <div class="text-center">
+            <table class="table table-striped table-sm">
+              <thead class="thead-dark">
+                <th>Ingredients</th>
+                <th>Quantity</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of recipe.ingredients">
+                  <td >{{item[0].name}}</td>
+                  <td>{{item[1] * servings / recipe.servings | number: '1.0-0'}} grs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-4">
+            <h4 class="mb-4">Preparation</h4>
+            <p *ngFor="let item of recipe.preparation" class="text-left p-4">
+              {{item}}
+            </p>
+          </div>
+        </div>
+
+        <div class="text-center m-4">
+          <button (click)="editRecipe(recipe._id)" class="btn btn-primary btn-sm m-2">Edit recipe</button>
+          <button (click)="deleteRecipe(recipe._id)" class="btn btn-danger btn-sm">Delete Recipe</button>
+        </div>
       </div>
-      <div class="mt-4">
-        <h4 class="mb-4">Preparation</h4>
-        <p *ngFor="let item of recipe.preparation" >
-          {{item}}
-        </p>
-      </div>
-    </div>
-    <div class="text-center m-4">
-      <button (click)="editRecipe(recipe._id)">Edit recipe</button>
-      <button (click)="deleteRecipe(recipe._id)">Delete Recipe</button>
     </div>
   </div>
 </div>

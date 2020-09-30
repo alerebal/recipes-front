@@ -3,6 +3,7 @@ export interface Recipe {
   name: string;
   ingredients: [string];
   kcalTot: number;
+  servings: number;
   preparation: [string];
   filePath: string;
   fileId: string;

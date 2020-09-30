@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+.container {
+  min-height: 600px;
+}
+
 .errorMsg {
   color: red;
 }
@@ -11,9 +15,43 @@ a {
 
 a:hover {
   text-decoration: none;
+  font-size: 1.1em;
+}
+
+.active {
+  font-size: 1.1em;
+  color: #888;
 }
 
 li {
   list-style: none;
 }
 
+/* button {
+  border-radius: 10px;
+  width: 30%;
+} */
+
+.btn {
+  border-radius: 5px;
+  width: 40%;
+}
+
+table .btn {
+  width: 80%;
+}
+
+input {
+  width: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+
+#weight {
+  width: 20%;
+}
+
+#servings {
+  width: 20%;
+}
