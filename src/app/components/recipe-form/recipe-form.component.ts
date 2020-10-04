@@ -40,8 +40,12 @@ export class RecipeFormComponent implements OnInit {
   msg = '';
   image: File;
   photoSelected: string | ArrayBuffer;
-  productEdit = false;
+  productEdited = false;
   listIngreEmpty = true;
+  newIngredientName: string;
+  successMsg = false;
+  nameExists = false;
+  noWeight = false;
 
   constructor(
     private productService: ProductsService,
@@ -69,11 +73,13 @@ export class RecipeFormComponent implements OnInit {
     const kcalTot = (weight * this.ingredient.kcal) / 100;
     if (weight) {
       this.listIngredients.push([this.ingredient, weight, kcalTot]);
-      this.msg = '';
+      // this.msg = '';
       this.listIngreEmpty = false;
+      this.noWeight = false;
     }
     if (!weight) {
       this.msg = 'Weight must be provided';
+      this.noWeight = true;
       return false;
     }
   }
@@ -87,11 +93,14 @@ export class RecipeFormComponent implements OnInit {
   }
 
   // if a new ingredient has been added to the API
-  newProductAdd(e: boolean) {
-    if (e) {
-      this.getProducts();
-      this.productEdit = false;
-    }
+  newProductAdd(e: string) {
+    this.getProducts();
+    this.newIngredientName = e;
+    this.productEdited = false;
+    this.successMsg = true;
+    setTimeout(() => {
+      this.successMsg = false;
+    }, 3000);
   }
 
   // when a photo has been selected
@@ -112,23 +121,35 @@ export class RecipeFormComponent implements OnInit {
     const ingredients = this.listIngredients;
     const kcalTot = this.kcalTot;
     const preparation = this.helper.splitter(this.recipeForm.value.preparation);
+    // recipe with image
     if (this.image) {
       let image: any;
       this.recipeService.addPhoto(this.image).subscribe(res => {
         image = res;
         this.recipeService.addRecipe({name, servings, preparation, kcalTot}, ingredients, image).subscribe(res2 => {
           this.router.navigate(['/recipes']);
+          this.nameExists = false;
         },
-        err => console.log(err));
+        // if the name already exists
+        err => {
+          this.msg = err.error.message;
+          this.nameExists = true;
+        });
       }
       );
 
+    // without image
     }
     if (!this.image) {
       this.recipeService.addRecipe({name, servings, preparation, kcalTot}, ingredients, null).subscribe(res => {
-        this.router.navigate(['/recipes']);
+        this.router.navigate(['/recipes']),
+        this.nameExists = false;
       },
-      err => console.log(err));
+      // if the name already exists
+      err => {
+        this.msg = err.error.message;
+        this.nameExists = true;
+      });
     }
     this.listIngredients = [];
     this.recipeForm.reset();

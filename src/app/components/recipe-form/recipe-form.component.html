@@ -13,7 +13,11 @@
               Name is required
             </div>
           </div>
+          <div class="div" *ngIf="nameExists" class="errorMsg">
+            {{msg}}
+          </div>
         </div>
+
         <!--Servings form-->
         <div class="form-group">
           <div><label>Servings <input formControlName="servings" id="servings" required></label></div>
@@ -55,7 +59,7 @@
           >
             <div *ngIf="weight.errors.notNumber">Weight sould be a number</div>
           </div>
-          <div class="errorMsg">
+          <div class="errorMsg" *ngIf="noWeight">
             {{ msg }}
           </div>
         </div>
@@ -65,20 +69,28 @@
         </div>
 
         <!--Create new ingredient-->
+        <div *ngIf="successMsg" >
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            The ingredient <span style="font-size: 1.1em; font-weight: bold;">{{newIngredientName | lowercase}}</span> has been added
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
         <hr />
         <p class="p-2">
           If the ingredient you need is not on the list, add a new ingredient to
           the list by clicking the button
         </p>
         <p>
-          <button type="button" class="btn btn-primary btn-sm mb-2" (click)="productEdit = !productEdit">
-            <span *ngIf="!productEdit">New Ingredient</span>
-            <span *ngIf="productEdit">Back</span>
+          <button type="button" class="btn btn-primary btn-sm mb-2" (click)="productEdited = !productEdited">
+            <span *ngIf="!productEdited">New Ingredient</span>
+            <span *ngIf="productEdited">Back</span>
           </button>
 
           <app-product-form
-            *ngIf="productEdit"
-            (productEdit)="newProductAdd($event)"
+            *ngIf="productEdited"
+            (newProductName)="newProductAdd($event)"
           ></app-product-form>
         </p>
 

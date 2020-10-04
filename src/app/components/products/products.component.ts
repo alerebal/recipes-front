@@ -11,7 +11,7 @@ import { ProductsService } from '../../services/products.service';
 export class ProductsComponent implements OnInit {
 
   ingredients: Product;
-  newIngredient = true;
+  newIngredient = false;
   ingredientAdded = false;
   ingredientDeleted = false;
   ingredient: string;
@@ -32,16 +32,14 @@ export class ProductsComponent implements OnInit {
   }
 
   // if a product has been added
-  onProductEdit(e: boolean) {
-    if (e) {
-      this.getProducts();
-      this.newIngredient = false;
-    }
-  }
-
   onNewProduct(e: string) {
+    this.getProducts();
+    this.newIngredient = false;
     this.ingredient = e;
     this.ingredientAdded = true;
+    setTimeout(() => {
+      this.ingredientAdded = false;
+    }, 3000);
   }
 
   // delete a product
@@ -50,7 +48,10 @@ export class ProductsComponent implements OnInit {
       this.productService.deleteProduct(id).subscribe(
         res => {this.getProducts(),
           this.ingredient = name,
-          this.ingredientDeleted = true;
+          this.ingredientDeleted = true,
+          setTimeout(() => {
+            this.ingredientDeleted = false;
+          }, 3000);
         }
         , err => console.log(err));
     }

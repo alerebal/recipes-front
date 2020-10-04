@@ -1,8 +1,13 @@
+<!-- Product Form -->
+
 <div class="container mt-4">
       <div class="card border-light">
+        <div *ngIf="errorName" class="errorMsg mb-2">
+          {{msg}}
+        </div>
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
           <div class="form-group bg-transparent">
-            <label>Ingredient's name: </label>
+            <label>Ingredient's name  </label>
             <input type="text" formControlName="name"  required>
           </div>
           <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMsg">
@@ -11,7 +16,7 @@
             </div >
           </div>
           <div class="form-group bg-transparent">
-            <label>Kcal per 100 grs: </label>
+            <label>Kcal per 100 grs  </label>
             <input type="text" formControlName="kcal" required>
           </div>
           <div *ngIf="kcal.invalid && (kcal.dirty || kcal.touched)" class="errorMsg">

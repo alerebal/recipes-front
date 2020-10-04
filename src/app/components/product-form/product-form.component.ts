@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { VirtualTimeScheduler } from 'rxjs';
 
 import { validatorNumber } from '../../directives/validator-number.directive';
 import { Product } from '../../interfaces/Product';
@@ -17,8 +18,9 @@ export class ProductFormComponent implements OnInit {
     name: this.fb.control('', Validators.required),
     kcal: this.fb.control('', [Validators.required, validatorNumber(/[^0-9]/)])
   });
-  @Output() productEdit = new EventEmitter<boolean>();
   @Output() newProductName = new EventEmitter<string>();
+  msg: string;
+  errorName = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,10 +35,14 @@ export class ProductFormComponent implements OnInit {
     const name = productSend.name;
     const kcal = productSend.kcal;
     this.productService.createProduct({ name, kcal }).subscribe(res => {
-      this.productEdit.emit(true);
       this.newProductName.emit(res.name);
     },
-    err => console.log('fallo'));
+    err => {
+      if (err.status === 400) {
+        this.errorName = true;
+        this.msg = err.error.message;
+      }
+    }) ;
   }
 
   get name() {

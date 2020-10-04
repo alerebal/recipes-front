@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormArray } from '@angular/forms';
 
 import { RecipesService } from '../../services/recipes.service';
 import { ProductsService } from '../../services/products.service';
@@ -29,6 +29,10 @@ export class RecipeEditComponent implements OnInit {
   photoSelected: string | ArrayBuffer;
   photoResponse: any;
   msg: string;
+  msgName: string;
+  successMsg = false;
+  newIngredientName: string;
+
 
   editForm = this.fb.group({
     ingreServer: this.fb.array([]),
@@ -66,12 +70,15 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
-    // if a new ingredient has been added to the API
-  newProductAdd(e: boolean) {
-    if (e) {
-      this.getProducts();
-      this.productEdit = false;
-    }
+  // if a new ingredient has been added to the API
+  newProductAdd(e: string) {
+    this.getProducts();
+    this.productEdit = false;
+    this.newIngredientName = e;
+    this.successMsg = true;
+    setTimeout(() => {
+      this.successMsg = false;
+    }, 3000);
   }
 
   // edit a product of the list of ingredients
@@ -119,33 +126,46 @@ export class RecipeEditComponent implements OnInit {
 
   // submit
   onSubmit(name: string, servings: number, id: string) {
+    // if recipe has a new image
     if (this.image) {
+      // adding new photo to cloudinary
       this.recipeService.addPhoto(this.image).subscribe(res => {
+        // deleting old photo from cloudinary
         this.recipeService.deletePhoto(this.recipe.fileId).subscribe();
         this.photoResponse = res;
+        // sending to the API
         this.recipeService.editRecipe(id , {name, servings, ingredients: this.ingredientsList,
           preparation: this.preparation,
           kcalTot: this.kcalTot,
           filePath: this.photoResponse.image, fileId: this.photoResponse.imageId}).subscribe(res2 => {
-            console.log(res2);
-            this.router.navigate(['/recipes']);
+            this.router.navigate([`/recipeView/${id}`]);
+          },
+          // if the name already exists. If it has been changed
+          err => {
+            if (err.status === 400) {
+              this.msgName = err.error.message;
+            }
           }
           );
       });
-
+      // if the recipe does not have a new image
     } else {
       this.recipeService.editRecipe(id, {name, servings, ingredients: this.ingredientsList,
       preparation: this.preparation, kcalTot: this.kcalTot,
       filePath: this.recipe.filePath, fileId: this.recipe.fileId}).subscribe(res3 => {
-        console.log(res3);
-        this.router.navigate(['/recipes']);
+        this.router.navigate([`/recipeView/${id}`]);
+      }, err => {
+        // if the name already exists. If it has been changed
+        if (err.status === 400) {
+          this.msgName = err.error.message;
+        }
       });
     }
   }
 
   get kcalTot() {
-    const kcal = this.ingredientsList.map(item => item[2]).reduce((acc, val) => acc + val);
-    const weight = this.ingredientsList.map(item => item[1]).reduce((acc, val) => acc + val);
+    const kcal = this.ingredientsList.map((item: any[]) => item[2]).reduce((acc: number, val: number) => acc + val);
+    const weight = this.ingredientsList.map((item: any[]) => item[1]).reduce((acc: number, val: number) => acc + val);
     const kcalTot = ((kcal * 100) / weight).toFixed(2);
     return kcalTot;
   }

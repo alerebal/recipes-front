@@ -7,6 +7,9 @@
         <div class="form-group">
             <input [value]="recipe.name" placeholder="Name" #name>
         </div>
+        <div class="errorMsg">
+          {{msgName}}
+        </div>
         <!--servings-->
         <div class="form-group">
           <label>Servings <input type="number" [value]="recipe.servings" id="servings" #servings></label>
@@ -19,8 +22,6 @@
                 <tr>
                   <th>Ingredients</th>
                   <th>Quantity</th>
-                  <!-- <th>KCal</th>
-                  <th></th> -->
                   <th></th>
                 </tr>
               </thead>
@@ -28,10 +29,6 @@
                 <tr *ngFor="let item of ingredientsList; let i = index" id="nameIngre" >
                   <td #ingre>{{item[0].name}}</td>
                   <td ><input [value]="item[1]"  #newWeight (change)='onEdit(i, newWeight.value, item[0].kcal);'></td>
-                  <!-- <td>{{item[2]}}</td> -->
-                  <!-- <td>
-                    <button style="display: none;" type="button" class="btn btn-primary btn-sm mr-2" #modify (click)='onEdit(i, newWeight.value, item[0].kcal);'>Change</button>
-                  </td> -->
                   <td>
                     <button type="button" class="btn btn-danger btn-sm" (click)='onDelete(i)'>Delete</button>
                   </td>
@@ -63,13 +60,21 @@
             </div>
             <!--add new ingredient-->
             <hr>
+            <div *ngIf="successMsg" >
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                The ingredient <span style="font-size: 1.1em; font-weight: bold;">{{newIngredientName | lowercase}}</span> has been added
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
             <p>If the ingredient you need is not on the list, add a new ingredient to the list by clicking the button</p>
             <button type="button" class="btn btn-primary btn-sm" (click)="productEdit = !productEdit">
               <span *ngIf="!productEdit">New Ingredient</span>
               <span *ngIf="productEdit">Back</span>
             </button>
 
-            <app-product-form *ngIf="productEdit" (productEdit)="newProductAdd($event)"></app-product-form>
+            <app-product-form *ngIf="productEdit" (newProductName)="newProductAdd($event)"></app-product-form>
             <hr>
           </div>
         </div>
