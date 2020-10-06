@@ -1,3 +1,7 @@
+// export const global = {
+//   url: 'http://localhost:3300/'
+// };
+
 export const global = {
-  url: 'http://localhost:3300/'
+  url: 'https://alerebal-recipes-back.herokuapp.com/'
 };

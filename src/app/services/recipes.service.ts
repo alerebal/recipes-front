@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { Recipe } from '../interfaces/Recipe';
 import { global } from '../global';
-import { Product } from '../interfaces/Product';
 
 @Injectable({
   providedIn: 'root'
