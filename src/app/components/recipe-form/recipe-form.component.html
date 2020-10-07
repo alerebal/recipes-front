@@ -68,6 +68,10 @@
           <button type="button" class="btn btn-primary btn-sm mb-2" (click)="addProduct()">Add Ingredient</button>
         </div>
 
+        <div class="successMsg" *ngIf="ingreAdded">
+          The ingredient has been added to the list
+        </div>
+
         <!--Create new ingredient-->
         <div *ngIf="successMsg" >
           <div class="alert alert-success alert-dismissible fade show" role="alert">

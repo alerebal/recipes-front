@@ -35,7 +35,7 @@ export class ProductFormComponent implements OnInit {
     const name = productSend.name;
     const kcal = productSend.kcal;
     this.productService.createProduct({ name, kcal }).subscribe(res => {
-      this.newProductName.emit(res.name);
+      this.newProductName.emit(name);
     },
     err => {
       if (err.status === 400) {

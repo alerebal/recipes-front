@@ -46,6 +46,7 @@ export class RecipeFormComponent implements OnInit {
   successMsg = false;
   nameExists = false;
   noWeight = false;
+  ingreAdded = false;
 
   constructor(
     private productService: ProductsService,
@@ -73,9 +74,12 @@ export class RecipeFormComponent implements OnInit {
     const kcalTot = (weight * this.ingredient.kcal) / 100;
     if (weight) {
       this.listIngredients.push([this.ingredient, weight, kcalTot]);
-      // this.msg = '';
       this.listIngreEmpty = false;
       this.noWeight = false;
+      this.ingreAdded = true;
+      setTimeout(() => {
+        this.ingreAdded = false;
+      }, 2000);
     }
     if (!weight) {
       this.msg = 'Weight must be provided';
