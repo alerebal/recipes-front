@@ -8,7 +8,7 @@
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
           <div class="form-group bg-transparent">
             <label>Ingredient's name  </label>
-            <input type="text" formControlName="name"  required>
+            <input type="text" formControlName="name"  required autofocus>
           </div>
           <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMsg">
             <div *ngIf="name.errors.required">
