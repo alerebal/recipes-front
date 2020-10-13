@@ -25,6 +25,10 @@ export class RecipesService {
     return this.http.get<Recipe>(`${this.url}recipe/${id}`);
   }
 
+  getUserRecipes(id: string) {
+    return this.http.get<Recipe>(`${this.url}userRecipes/${id}`);
+  }
+
   addRecipe(recipe: any, ingredients: any, image: string) {
     return this.http.post<Recipe>(`${this.url}recipe`, {recipe, ingredients, image});
   }

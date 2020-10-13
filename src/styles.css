@@ -8,6 +8,10 @@
   color: red;
 }
 
+.successMsg {
+  color: green;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;

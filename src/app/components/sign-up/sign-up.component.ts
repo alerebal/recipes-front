@@ -13,6 +13,7 @@ export class SignUpComponent implements OnInit {
 
   signUpForm = this.fb.group({
     email: this.fb.control('', [Validators.required, Validators.email]),
+    name: this.fb.control('', Validators.required),
     password: this.fb.control('', [Validators.required, Validators.minLength(4)]),
     confirmPassword: this.fb.control('', [Validators.required, Validators.minLength(4)])
   });
@@ -42,11 +43,13 @@ export class SignUpComponent implements OnInit {
     } else {
       const user = {
         email: form.email,
+        name: form.name,
         password: form.password
       };
-      this.authService.signUp (user).subscribe(res => {
+      this.authService.signUp(user).subscribe(res => {
+        const id = res.newUser._id;
         localStorage.setItem('token', res.token);
-        this.router.navigate(['/userRecipes']);
+        this.router.navigate([`userRecipes/${id}`]);
       },
       err => {
         this.errorServer = err.error.message;
@@ -59,6 +62,10 @@ export class SignUpComponent implements OnInit {
 
   get email() {
     return this.signUpForm.get('email');
+  }
+
+  get name() {
+    return this.signUpForm.get('name');
   }
 
   get password() {

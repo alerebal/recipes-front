@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'recipeForm', component: RecipeFormComponent},
   {path: '', component: HomeComponent},
   {path: 'recipes', component: RecipesComponent},
-  {path: 'userRecipes', component: UserRecipesComponent, canActivate: [AuthGuard]},
+  {path: 'userRecipes/:id', component: UserRecipesComponent, canActivate: [AuthGuard]},
   {path: 'recipeView/:id', component: RecipeViewComponent},
   {path: 'recipeEdit/:id', component: RecipeEditComponent},
   {path: 'products', component: ProductsComponent},

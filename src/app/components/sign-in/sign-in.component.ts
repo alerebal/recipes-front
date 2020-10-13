@@ -34,8 +34,9 @@ export class SignInComponent implements OnInit {
       password: form.password
     };
     this.authService.signIn(user).subscribe(res => {
+      const id = res.user._id;
       localStorage.setItem('token', res.token);
-      this.router.navigate(['/userRecipes']);
+      this.router.navigate([`userRecipes/${id}`]);
     },
     err => {
       this.errorMsg = err.error.message;

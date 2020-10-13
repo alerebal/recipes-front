@@ -7,7 +7,6 @@ import { RecipesService } from '../../services/recipes.service';
 import { HelpersService } from '../../services/helpers.service';
 import { Product } from '../../interfaces/Product';
 import { validatorNumber } from 'src/app/directives/validator-number.directive';
-import { invalid } from '@angular/compiler/src/render3/view/util';
 
 
 interface HtmlInputEvent extends Event {
@@ -46,6 +45,7 @@ export class RecipeFormComponent implements OnInit {
   successMsg = false;
   nameExists = false;
   noWeight = false;
+  ingreAdded = false;
 
   constructor(
     private productService: ProductsService,
@@ -59,13 +59,14 @@ export class RecipeFormComponent implements OnInit {
     this.getProducts();
   }
 
-  // get ingredients - (ingredients = products in API)
+
   getProducts() {
-    this.productService.getProducts().subscribe(res => {
+    const userId = localStorage.getItem('userId');
+    this.productService.getAllProducts(userId).subscribe(res => {
       this.ingredients = res;
-      this.ingredient = this.ingredients[0];
     });
   }
+
 
   // add an ingredient
   addProduct() {
@@ -76,6 +77,10 @@ export class RecipeFormComponent implements OnInit {
       // this.msg = '';
       this.listIngreEmpty = false;
       this.noWeight = false;
+      this.ingreAdded = true;
+      setTimeout(() => {
+        this.ingreAdded = false;
+      }, 3000);
     }
     if (!weight) {
       this.msg = 'Weight must be provided';
@@ -121,13 +126,14 @@ export class RecipeFormComponent implements OnInit {
     const ingredients = this.listIngredients;
     const kcalTot = this.kcalTot;
     const preparation = this.helper.splitter(this.recipeForm.value.preparation);
+    const userId = localStorage.getItem('userId');
     // recipe with image
     if (this.image) {
       let image: any;
       this.recipeService.addPhoto(this.image).subscribe(res => {
         image = res;
-        this.recipeService.addRecipe({name, servings, preparation, kcalTot}, ingredients, image).subscribe(res2 => {
-          this.router.navigate(['/recipes']);
+        this.recipeService.addRecipe({userId, name, servings, preparation, kcalTot}, ingredients, image).subscribe(res2 => {
+          this.router.navigate([`/userRecipes/${userId}`]);
           this.nameExists = false;
         },
         // if the name already exists
@@ -141,8 +147,8 @@ export class RecipeFormComponent implements OnInit {
     // without image
     }
     if (!this.image) {
-      this.recipeService.addRecipe({name, servings, preparation, kcalTot}, ingredients, null).subscribe(res => {
-        this.router.navigate(['/recipes']),
+      this.recipeService.addRecipe({userId, name, servings, preparation, kcalTot}, ingredients, null).subscribe(res => {
+        this.router.navigate([`/userRecipes/${userId}`]),
         this.nameExists = false;
       },
       // if the name already exists

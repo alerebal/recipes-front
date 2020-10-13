@@ -1,5 +1,6 @@
 export interface Recipe {
   id?: string;
+  user: string;
   name: string;
   ingredients: [string];
   kcalTot: number;

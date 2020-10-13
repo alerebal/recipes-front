@@ -2,12 +2,12 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6 col-lg-4 mb-4 p-0" *ngFor="let recipe of recipes" >
-      <div class="card border-light " >
+    <div class="col-md-6 col-lg-4 m-auto p-0" *ngFor="let recipe of recipes" >
+      <div class="card border-light mb-4" >
         <div class="card-body text-center m-auto p-0">
-          <h4 class="card-title"><a [routerLink]="['/recipeView/' + recipe._id]" routerLinkActive="router-link-active">{{recipe.name}}</a></h4>
+          <h4 class="card-title"><a [routerLink]="['/recipeView/' + recipe._id]">{{recipe.name}}</a></h4>
           <h6 class="card-subtitle m-2">{{recipe.kcalTot}} kcal per 100 grs</h6>
-          <a [routerLink]="['/recipeView/' + recipe._id]" routerLinkActive="router-link-active" >
+          <a [routerLink]="['/recipeView/' + recipe._id]">
             <div class="overflow-hidden mb-4" style="height: 200px;" *ngIf="recipe.filePath">
               <img src="{{recipe.filePath}}" class="img-fluid " >
             </div>

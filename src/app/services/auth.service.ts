@@ -20,11 +20,11 @@ export class AuthService {
   }
 
   signUp(user: User) {
-    return this.http.post<User>(`${this.url}signUp`, user);
+    return this.http.post<any>(`${this.url}signUp`, user);
   }
 
   signIn(user: User) {
-    return this.http.post<User>(`${this.url}signIn`, user);
+    return this.http.post<any>(`${this.url}signIn`, user);
   }
 
   loggedIn() {
@@ -38,6 +38,10 @@ export class AuthService {
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  getUser(id: string) {
+    return this.http.get<User>(`${this.url}user/${id}`);
   }
 
 }

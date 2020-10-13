@@ -7,7 +7,7 @@
       </div>
       <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <input type="email" placeholder="Email" formControlName="email" required>
+          <input type="email" placeholder="Email" formControlName="email" required autofocus>
         </div>
         <div class="form-group">
           <input type="password" placeholder="Password" formControlName="password" required>

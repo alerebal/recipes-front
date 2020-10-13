@@ -14,6 +14,4 @@ export class HelpersService {
     return arr.filter(item => item !== '');
   }
 
-
-
 }

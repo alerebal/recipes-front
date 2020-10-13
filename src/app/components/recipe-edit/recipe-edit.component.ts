@@ -64,7 +64,8 @@ export class RecipeEditComponent implements OnInit {
 
   // get ingredients from API
   getProducts() {
-    this.productService.getProducts().subscribe(res => {
+    const userId = localStorage.getItem('userId');
+    this.productService.getAllProducts(userId).subscribe(res => {
       this.ingreServerList = res;
       this.ingredient = this.ingreServerList[0];
     });

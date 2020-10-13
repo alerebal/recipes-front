@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { VirtualTimeScheduler } from 'rxjs';
 
 import { validatorNumber } from '../../directives/validator-number.directive';
-import { Product } from '../../interfaces/Product';
 import { ProductsService } from '../../services/products.service';
 
 
@@ -34,7 +33,8 @@ export class ProductFormComponent implements OnInit {
     const productSend = this.productForm.value;
     const name = productSend.name;
     const kcal = productSend.kcal;
-    this.productService.createProduct({ name, kcal }).subscribe(res => {
+    const userId = localStorage.getItem('userId');
+    this.productService.createProduct({ name, userId, kcal }).subscribe(res => {
       this.newProductName.emit(res.name);
     },
     err => {

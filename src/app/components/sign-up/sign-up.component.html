@@ -22,6 +22,14 @@
         </div>
 
         <!-- Input Validators -->
+        <div class="errorMsg" *ngIf="name.invalid && name.touched">
+          Name is required
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Name" formControlName="name" required>
+        </div>
+
+        <!-- Input Validators -->
         <div class="errorMsg" *ngIf="password.invalid && password.touched">
           <div *ngIf="password.errors.required">
             Password is required
