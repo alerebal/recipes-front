@@ -37,14 +37,9 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
     const productSend = this.productForm.value;
     const name = productSend.name;
     const kcal = productSend.kcal;
-<<<<<<< HEAD
-    this.productService.createProduct({ name, kcal }).subscribe(res => {
-      this.newProductName.emit(name);
-=======
     const userId = localStorage.getItem('userId');
     this.productService.createProduct({ name, userId, kcal }).subscribe(res => {
       this.newProductName.emit(res.name);
->>>>>>> dev
     },
     err => {
       if (err.status === 400) {

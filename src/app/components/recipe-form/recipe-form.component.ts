@@ -78,22 +78,14 @@ export class RecipeFormComponent implements OnInit, AfterViewInit {
     const weight = Number(this.recipeForm.value.weight);
     const kcal = (weight * this.ingredient.kcal) / 100;
     if (weight) {
-<<<<<<< HEAD
-      this.listIngredients.push([this.ingredient, weight, kcalTot]);
-=======
       this.listIngredients.push([this.ingredient, weight, kcal]);
       // this.msg = '';
->>>>>>> dev
       this.listIngreEmpty = false;
       this.noWeight = false;
       this.ingreAdded = true;
       setTimeout(() => {
         this.ingreAdded = false;
-<<<<<<< HEAD
-      }, 2000);
-=======
       }, 3000);
->>>>>>> dev
     }
     if (!weight) {
       this.msg = 'Weight must be provided';
