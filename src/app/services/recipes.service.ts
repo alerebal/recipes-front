@@ -33,6 +33,10 @@ export class RecipesService {
     return this.http.post<Recipe>(`${this.url}recipe`, {recipe, ingredients, image});
   }
 
+  copyRecipe(recipe: Recipe, id: string) {
+    return this.http.post(`${this.url}copyRecipe/${id}`, recipe);
+  }
+
   addPhoto(image: File) {
     const fd = new FormData();
     fd.append('image', image);

@@ -9,14 +9,12 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavigationComponent implements OnInit {
 
-  userId: string;
 
   constructor(
     private authService: AuthService
   ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem('userId');
   }
 
 }

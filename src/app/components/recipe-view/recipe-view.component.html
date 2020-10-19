@@ -1,5 +1,6 @@
+<!-- User Recipes -->
 <div class="container">
-  <div class="row">
+  <div class="row" >
     <div class="col-md-8 col-lg-6 m-auto p-0">
       <div class="card border-light text-center" *ngIf="recipe">
         <h2 class="card-title">{{recipe.name}}</h2>
@@ -9,7 +10,7 @@
           <div>
           <!--Change servings-->
             <label class="mb-4">Change servings here <input type="number" [value]="servings" id="servings" #serChange>
-            <button (click)="servingsChange(serChange.value)" id="change" class="btn btn-primary btn-sm">Change</button>
+            <button (click)="servingsChange(serChange.value)" id="change" class="btn btn-primary btn-sm p-1">Change</button>
             </label>
           </div>
           <!--Ingredients list-->
@@ -33,13 +34,15 @@
               {{item}}
             </p>
           </div>
+          <div class="text-center m-4" *ngIf="isUserRecipe; else copy">
+            <button (click)="editRecipe(recipe._id)" class="btn btn-primary btn-sm m-2">Edit recipe</button>
+            <button (click)="deleteRecipe(recipe._id)" class="btn btn-danger btn-sm">Delete Recipe</button>
+          </div>
+          <ng-template #copy>
+            <button class="btn btn-primary btn-sm" (click)="copyRecipe()" >Add to my recipes</button>
+          </ng-template>
         </div>
-
-        <div class="text-center m-4">
-          <button (click)="editRecipe(recipe._id)" class="btn btn-primary btn-sm m-2">Edit recipe</button>
-          <button (click)="deleteRecipe(recipe._id)" class="btn btn-danger btn-sm">Delete Recipe</button>
         </div>
-      </div>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, AfterViewInit {
 
   signUpForm = this.fb.group({
     email: this.fb.control('', [Validators.required, Validators.email]),
@@ -18,6 +18,7 @@ export class SignUpComponent implements OnInit {
     confirmPassword: this.fb.control('', [Validators.required, Validators.minLength(4)])
   });
 
+  @ViewChild('emailFocus', {static: false}) emailFocus: ElementRef;
   errorMsg: string;
   errorServer: string;
 
@@ -28,6 +29,10 @@ export class SignUpComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.emailFocus.nativeElement.focus();
   }
 
   onSubmit() {
@@ -49,7 +54,8 @@ export class SignUpComponent implements OnInit {
       this.authService.signUp(user).subscribe(res => {
         const id = res.newUser._id;
         localStorage.setItem('token', res.token);
-        this.router.navigate([`userRecipes/${id}`]);
+        localStorage.setItem('userId', id);
+        this.router.navigate([`userRecipes`]);
       },
       err => {
         this.errorServer = err.error.message;

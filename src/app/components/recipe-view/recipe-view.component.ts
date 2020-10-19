@@ -15,6 +15,7 @@ export class RecipeViewComponent implements OnInit {
   id: string;
   recipe: Recipe;
   servings: number;
+  isUserRecipe: boolean;
 
   constructor(
     private activatedRouter: ActivatedRoute,
@@ -34,6 +35,13 @@ export class RecipeViewComponent implements OnInit {
     this.recipeService.getRecipe(this.id).subscribe(res => {
       this.recipe = res;
       this.servings = res.servings;
+      const userId = localStorage.getItem('userId');
+      const recipeUserId = res.userId;
+      if (userId === recipeUserId) {
+        this.isUserRecipe = true;
+      } else {
+        this.isUserRecipe = false;
+      }
     });
   }
 
@@ -47,11 +55,23 @@ export class RecipeViewComponent implements OnInit {
     if (confirm('Are you sure?')) {
       this.recipeService.deleteRecipe(id).subscribe(
         res => {
-          this.router.navigate(['/recipes']);
+          this.router.navigate(['/userRecipes']);
         },
         err => console.log(err)
         );
     }
+  }
+
+  copyRecipe() {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      return this.router.navigate(['/signIn']);
+    }
+
+    this.recipeService.copyRecipe(this.recipe, userId).subscribe(res => {
+      this.router.navigate(['userRecipes']);
+    },
+    err => console.log(err));
   }
 
   // change servings

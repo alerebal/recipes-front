@@ -2,12 +2,12 @@
   <div class="row text-center">
     <div class="col-md-8 col-lg-6 m-auto p-0">
       <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-        <h3>Recipe form</h3>
+        <h3 id="anchor">Recipe form</h3>
         <!--Name form-->
         <div class="form-group">
           <div><label>Name</label>
           </div>
-          <input formControlName="name" required />
+          <input formControlName="name" required #nameFocus/>
           <div *ngIf="name.invalid && (name.dirty || name.touched)">
             <div *ngIf="name.errors.required" class="errorMsg">
               Name is required
@@ -24,6 +24,9 @@
           <div *ngIf="servings.invalid && (servings.dirty || servings.touched)">
             <div class="errorMsg" *ngIf="servings.errors.required">
               Servings are required
+            </div>
+            <div class="errorMsg" *ngIf="servings.errors.min">
+              Servings must be 1 or more
             </div>
           </div>
         </div>
@@ -69,7 +72,12 @@
         </div>
 
         <div class="successMsg mb-2" *ngIf="ingreAdded">
-          The ingredient has been added to the list
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            The ingredient has been added to the list
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
 
         <!--Create new ingredient-->
@@ -153,7 +161,7 @@
           />
         </div>
         <div class="text-center">
-          <button [disabled]="!recipeForm.valid" class="btn btn-primary btn-sm" >Save Recipe</button>
+          <button [disabled]="!recipeForm.valid" class="btn btn-primary btn-sm" [routerLink]="['/recipeForm']" fragment="anchor">Save Recipe</button>
         </div>
       </form>
     </div>

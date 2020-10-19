@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { VirtualTimeScheduler } from 'rxjs';
 
 import { validatorNumber } from '../../directives/validator-number.directive';
 import { ProductsService } from '../../services/products.service';
@@ -11,13 +10,14 @@ import { ProductsService } from '../../services/products.service';
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit, AfterViewInit {
 
   productForm = this.fb.group({
     name: this.fb.control('', Validators.required),
     kcal: this.fb.control('', [Validators.required, validatorNumber(/[^0-9]/)])
   });
   @Output() newProductName = new EventEmitter<string>();
+  @ViewChild('nameFocus', {static: false}) nameFocus: ElementRef;
   msg: string;
   errorName = false;
 
@@ -27,6 +27,10 @@ export class ProductFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.nameFocus.nativeElement.focus();
   }
 
   onSubmit() {

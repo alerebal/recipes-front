@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { Recipe } from 'src/app/interfaces/Recipe';
 import { User } from 'src/app/interfaces/User';
@@ -18,7 +17,6 @@ export class UserRecipesComponent implements OnInit {
   userRecipes: Recipe;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private recipeService: RecipesService
   ) { }
@@ -30,10 +28,7 @@ export class UserRecipesComponent implements OnInit {
   }
 
   getUserId() {
-    this.activatedRoute.params.subscribe(res => {
-      this.userId = res.id;
-      localStorage.setItem('userId', this.userId);
-    });
+    this.userId = localStorage.getItem('userId');
   }
 
   getUser(id: string) {

@@ -11,7 +11,7 @@
         </li>
         <ng-container *ngIf="authService.loggedIn()">
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/userRecipes/' + userId]" routerLinkActive="active">My Recipes</a>
+            <a class="nav-link" [routerLink]="['/userRecipes/']" routerLinkActive="active">My Recipes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/recipeForm']" routerLinkActive="active">New Recipe</a>
@@ -39,4 +39,5 @@
     </ul>
   </div>
 </nav>
+<div id="anchor"></div>
 

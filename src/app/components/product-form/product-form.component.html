@@ -1,6 +1,8 @@
 <!-- Product Form -->
 
 <div class="container mt-4">
+  <div class="row ">
+    <div class="col-md-8 text-center mx-auto">
       <div class="card border-light">
         <div *ngIf="errorName" class="errorMsg mb-2">
           {{msg}}
@@ -8,7 +10,7 @@
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
           <div class="form-group bg-transparent">
             <label>Ingredient's name  </label>
-            <input type="text" formControlName="name"  required autofocus>
+            <input type="text" formControlName="name"  required #nameFocus>
           </div>
           <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMsg">
             <div *ngIf="name.errors.required">
@@ -32,5 +34,7 @@
           </div>
         </form>
       </div>
+    </div>
+  </div>
 </div>
 

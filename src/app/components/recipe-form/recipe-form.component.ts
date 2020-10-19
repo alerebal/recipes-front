@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -19,19 +19,20 @@ interface HtmlInputEvent extends Event {
   templateUrl: './recipe-form.component.html',
   styleUrls: ['./recipe-form.component.css']
 })
-export class RecipeFormComponent implements OnInit {
+export class RecipeFormComponent implements OnInit, AfterViewInit {
 
   // form to add new recipe
   recipeForm = this.fb.group({
     name: this.fb.control('', Validators.required),
     weight: this.fb.control('', [Validators.required , validatorNumber(/[^0-9]/)]),
-    servings: this.fb.control('', validatorNumber(/[^0-9]/)),
+    servings: this.fb.control('', [validatorNumber(/[^0-9]/), Validators.min(1)]),
     preparation: this.fb.control('', Validators.required),
     ingreServer: this.fb.array([])
   });
 
   ingreServer = this.recipeForm.get('ingreServer') as FormArray;
 
+  @ViewChild('nameFocus', {static: true}) nameFocus: ElementRef;
   ingredients: Product;
   listIngredients = [];
   ingredient: Product;
@@ -59,11 +60,15 @@ export class RecipeFormComponent implements OnInit {
     this.getProducts();
   }
 
+  ngAfterViewInit() {
+    this.nameFocus.nativeElement.focus();
+  }
 
   getProducts() {
     const userId = localStorage.getItem('userId');
     this.productService.getAllProducts(userId).subscribe(res => {
       this.ingredients = res;
+      this.ingredient = this.ingredients[0];
     });
   }
 
@@ -71,9 +76,9 @@ export class RecipeFormComponent implements OnInit {
   // add an ingredient
   addProduct() {
     const weight = Number(this.recipeForm.value.weight);
-    const kcalTot = (weight * this.ingredient.kcal) / 100;
+    const kcal = (weight * this.ingredient.kcal) / 100;
     if (weight) {
-      this.listIngredients.push([this.ingredient, weight, kcalTot]);
+      this.listIngredients.push([this.ingredient, weight, kcal]);
       // this.msg = '';
       this.listIngreEmpty = false;
       this.noWeight = false;
@@ -125,6 +130,7 @@ export class RecipeFormComponent implements OnInit {
     const servings = recipeSend.servings;
     const ingredients = this.listIngredients;
     const kcalTot = this.kcalTot;
+    const weightTot = this.weightTot;
     const preparation = this.helper.splitter(this.recipeForm.value.preparation);
     const userId = localStorage.getItem('userId');
     // recipe with image
@@ -132,8 +138,8 @@ export class RecipeFormComponent implements OnInit {
       let image: any;
       this.recipeService.addPhoto(this.image).subscribe(res => {
         image = res;
-        this.recipeService.addRecipe({userId, name, servings, preparation, kcalTot}, ingredients, image).subscribe(res2 => {
-          this.router.navigate([`/userRecipes/${userId}`]);
+        this.recipeService.addRecipe({userId, name, servings, preparation, weightTot, kcalTot}, ingredients, image).subscribe(res2 => {
+          this.router.navigate([`/userRecipes`]);
           this.nameExists = false;
         },
         // if the name already exists
@@ -147,8 +153,8 @@ export class RecipeFormComponent implements OnInit {
     // without image
     }
     if (!this.image) {
-      this.recipeService.addRecipe({userId, name, servings, preparation, kcalTot}, ingredients, null).subscribe(res => {
-        this.router.navigate([`/userRecipes/${userId}`]),
+      this.recipeService.addRecipe({userId, name, servings, preparation, weightTot, kcalTot}, ingredients, null).subscribe(res => {
+        this.router.navigate([`/userRecipes`]);
         this.nameExists = false;
       },
       // if the name already exists
@@ -163,6 +169,8 @@ export class RecipeFormComponent implements OnInit {
   }
 
 
+
+
   get name() { return this.recipeForm.get('name'); }
 
   get weight() { return this.recipeForm.get('weight'); }
@@ -172,10 +180,10 @@ export class RecipeFormComponent implements OnInit {
   get preparation() { return this.recipeForm.get('preparation'); }
 
   get kcalTot() {
-    const kcal = this.listIngredients.map(item => item[2]).reduce((acc, val) => acc + val);
-    const weight = this.listIngredients.map(item => item[1]).reduce((acc, val) => acc + val);
-    const kcalTot = ((kcal * 100) / weight).toFixed(2);
-    return kcalTot;
+    return this.listIngredients.map(item => item[2]).reduce((acc, val) => acc + val).toFixed(2);
   }
 
+  get weightTot() {
+    return this.listIngredients.map(item => item[1]).reduce((acc, val) => acc + val).toFixed(2);
+  }
 }

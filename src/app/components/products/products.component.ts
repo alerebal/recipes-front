@@ -57,7 +57,8 @@ export class ProductsComponent implements OnInit {
   onDelete(id: string, name: string) {
     if (confirm('Are you sure?')) {
       this.productService.deleteProduct(id).subscribe(
-        res => {this.getProducts(),
+        res => {
+          this.getUserProducts(),
           this.ingredient = name,
           this.ingredientDeleted = true,
           setTimeout(() => {

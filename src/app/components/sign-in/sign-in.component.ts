@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 
 import { AuthService } from '../../services/auth.service';
 
@@ -9,14 +10,16 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, AfterViewInit {
 
   signInForm = this.fb.group({
     email: this.fb.control('', Validators.required),
     password: this.fb.control('', Validators.required)
   });
 
+  @ViewChild('emailFocus', {static: false}) emailFocus: ElementRef;
   errorMsg: string;
+  isError = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +28,10 @@ export class SignInComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.emailFocus.nativeElement.focus();
   }
 
   onSubmit() {
@@ -36,14 +43,17 @@ export class SignInComponent implements OnInit {
     this.authService.signIn(user).subscribe(res => {
       const id = res.user._id;
       localStorage.setItem('token', res.token);
-      this.router.navigate([`userRecipes/${id}`]);
+      localStorage.setItem('userId', id);
+      this.router.navigate([`userRecipes`]);
     },
     err => {
       this.errorMsg = err.error.message;
+      this.isError = true;
       setTimeout(() => {
-        this.errorMsg = '';
+        this.isError = false;
       }, 3000);
     });
   }
+
 
 }
