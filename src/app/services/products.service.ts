@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-// import { catchError } from 'rxjs/operators'; // borre retry
 
 import { global } from '../global';
 import { Product } from '../interfaces/Product';
@@ -22,6 +20,14 @@ export class ProductsService {
 
   getProducts() {
     return this.http.get<Product>(`${this.url}products`);
+  }
+
+  getUserProducts(id: string) {
+    return this.http.get<Product>(`${this.url}products/${id}`);
+  }
+
+  getAllProducts(id: string) {
+    return this.http.get<Product>(`${this.url}allProducts/${id}`);
   }
 
   createProduct(product: Product) {

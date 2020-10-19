@@ -2,4 +2,7 @@
   min-height: auto;
 }
 
-
+input {
+  width: 50%;
+  margin-left: 10px;
+}

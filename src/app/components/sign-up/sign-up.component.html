@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-6 m-auto text-center">
+      <h3>Sign Up</h3>
+      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <!-- Input Validators -->
+        <div class="errorMsg"  *ngIf="email.invalid && email.touched">
+          <div  *ngIf="email.errors.required">
+            Email is required
+          </div>
+          <div  *ngIf="email.errors.email">
+            Shoud be an email
+          </div>
+        </div>
+        <!-- Server errors -->
+        <div class="errorMsg">
+          {{errorServer}}
+        </div>
+
+        <div class="form-group">
+          <input type="email" placeholder="Email"  #emailFocus formControlName="email" required>
+        </div>
+
+        <!-- Input Validators -->
+        <div class="errorMsg" *ngIf="name.invalid && name.touched">
+          Name is required
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Name" formControlName="name" required>
+        </div>
+
+        <!-- Input Validators -->
+        <div class="errorMsg" *ngIf="password.invalid && password.touched">
+          <div *ngIf="password.errors.required">
+            Password is required
+          </div>
+          <div *ngIf="password.errors.minlength">
+            Should be 4 character
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="password" placeholder="Password" formControlName="password" required minlength="4">
+        </div>
+
+        <!-- Input Validators -->
+        <div class="errorMsg" *ngIf="confirmPassword.invalid && confirmPassword.touched">
+          <div  *ngIf="confirmPassword.errors.required">
+            Please confirm password
+          </div>
+          <div *ngIf="confirmPassword.errors.minlength">
+            Should be 4 character
+          </div>
+        </div>
+        <div class="errorMsg">
+          {{errorMsg}}
+        </div>
+
+        <div class="form-group">
+          <input type="password" placeholder="Confirm password" formControlName="confirmPassword" required minlength="4">
+        </div>
+        <button class="btn btn-primary btn-sm" [disabled]="!signUpForm.valid">Send</button>
+      </form>
+    </div>
+  </div>
+</div>

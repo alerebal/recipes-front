@@ -11,10 +11,12 @@ import { ProductsService } from '../../services/products.service';
 export class ProductsComponent implements OnInit {
 
   ingredients: Product;
+  userIngredients: Product;
   newIngredient = false;
   ingredientAdded = false;
   ingredientDeleted = false;
   ingredient: string;
+  serverIngredients = true;
 
   constructor(
     private productService: ProductsService
@@ -22,6 +24,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.getProducts();
+    this.getUserProducts();
   }
 
   // get the ingredients
@@ -31,9 +34,17 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  getUserProducts() {
+    const userId = localStorage.getItem('userId');
+    this.productService.getUserProducts(userId).subscribe(res => {
+    this.userIngredients = res;
+    });
+  }
+
   // if a product has been added
   onNewProduct(e: string) {
     this.getProducts();
+    this.getUserProducts();
     this.newIngredient = false;
     this.ingredient = e;
     this.ingredientAdded = true;
@@ -46,7 +57,8 @@ export class ProductsComponent implements OnInit {
   onDelete(id: string, name: string) {
     if (confirm('Are you sure?')) {
       this.productService.deleteProduct(id).subscribe(
-        res => {this.getProducts(),
+        res => {
+          this.getUserProducts(),
           this.ingredient = name,
           this.ingredientDeleted = true,
           setTimeout(() => {

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,8 +15,11 @@ import { RecipeViewComponent } from './components/recipe-view/recipe-view.compon
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
 import { ProductsComponent } from './components/products/products.component';
 import { FooterComponent } from './components/footer/footer.component';
-
-
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { UserRecipesComponent } from './components/user-recipes/user-recipes.component';
+import { AuthGuard } from './auth.guard';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { FooterComponent } from './components/footer/footer.component';
     RecipeViewComponent,
     RecipeEditComponent,
     ProductsComponent,
-    FooterComponent
+    FooterComponent,
+    SignInComponent,
+    SignUpComponent,
+    UserRecipesComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +45,14 @@ import { FooterComponent } from './components/footer/footer.component';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

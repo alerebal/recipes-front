@@ -6,6 +6,12 @@ import { RecipesComponent } from './components/recipes/recipes.component';
 import { RecipeViewComponent } from './components/recipe-view/recipe-view.component';
 import { RecipeEditComponent } from './components/recipe-edit/recipe-edit.component';
 import { ProductsComponent } from './components/products/products.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { UserRecipesComponent } from './components/user-recipes/user-recipes.component';
+
+import { AuthGuard } from './auth.guard';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 
 
@@ -13,13 +19,20 @@ const routes: Routes = [
   {path: 'recipeForm', component: RecipeFormComponent},
   {path: '', component: HomeComponent},
   {path: 'recipes', component: RecipesComponent},
+  {path: 'userRecipes', component: UserRecipesComponent, canActivate: [AuthGuard]},
   {path: 'recipeView/:id', component: RecipeViewComponent},
   {path: 'recipeEdit/:id', component: RecipeEditComponent},
-  {path: 'products', component: ProductsComponent}
+  {path: 'products', component: ProductsComponent},
+  {path: 'signUp', component: SignUpComponent},
+  {path: 'signIn', component: SignInComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    onSameUrlNavigation: 'ignore',
+    anchorScrolling: 'enabled',
+    scrollPositionRestoration: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

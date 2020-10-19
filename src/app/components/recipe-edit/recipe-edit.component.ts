@@ -19,6 +19,7 @@ interface HtmlInputEvent extends Event {
 export class RecipeEditComponent implements OnInit {
 
   recipe: Recipe;
+  id: string;
   ingredients: any;
   ingredientsList: any = [];
   preparation: string[];
@@ -28,6 +29,7 @@ export class RecipeEditComponent implements OnInit {
   image: File;
   photoSelected: string | ArrayBuffer;
   photoResponse: any;
+  errors = [];
   msg: string;
   msgName: string;
   successMsg = false;
@@ -52,7 +54,8 @@ export class RecipeEditComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(res => {
-      this.recipeService.getRecipe(res.id).subscribe(item => {
+      this.id = res.id;
+      this.recipeService.getRecipe(this.id).subscribe(item => {
         this.recipe = item;
         this.ingredientsList = item.ingredients;
         this.preparation = item.preparation;
@@ -64,7 +67,8 @@ export class RecipeEditComponent implements OnInit {
 
   // get ingredients from API
   getProducts() {
-    this.productService.getProducts().subscribe(res => {
+    const userId = localStorage.getItem('userId');
+    this.productService.getAllProducts(userId).subscribe(res => {
       this.ingreServerList = res;
       this.ingredient = this.ingreServerList[0];
     });
@@ -111,6 +115,9 @@ export class RecipeEditComponent implements OnInit {
 
   // when a paragraph has been modificated
   changePara(prepa: string, i: string) {
+    if (prepa === '') {
+      this.errors.push('Preparation should not be empty');
+    }
     this.preparation[i] = prepa;
   }
 
@@ -126,6 +133,15 @@ export class RecipeEditComponent implements OnInit {
 
   // submit
   onSubmit(name: string, servings: number, id: string) {
+    if (name === '') {
+      this.errors.push('Name should not be empty');
+    }
+    if (servings < 1) {
+      this.errors.push('Servings should be more than 0');
+    }
+    if (this.errors.length > 0) {
+      return this.errors;
+    } else {
     // if recipe has a new image
     if (this.image) {
       // adding new photo to cloudinary
@@ -136,6 +152,7 @@ export class RecipeEditComponent implements OnInit {
         // sending to the API
         this.recipeService.editRecipe(id , {name, servings, ingredients: this.ingredientsList,
           preparation: this.preparation,
+          weigthTot: this.weigthTot,
           kcalTot: this.kcalTot,
           filePath: this.photoResponse.image, fileId: this.photoResponse.imageId}).subscribe(res2 => {
             this.router.navigate([`/recipeView/${id}`]);
@@ -151,7 +168,7 @@ export class RecipeEditComponent implements OnInit {
       // if the recipe does not have a new image
     } else {
       this.recipeService.editRecipe(id, {name, servings, ingredients: this.ingredientsList,
-      preparation: this.preparation, kcalTot: this.kcalTot,
+      preparation: this.preparation, weigthTot: this.weigthTot, kcalTot: this.kcalTot,
       filePath: this.recipe.filePath, fileId: this.recipe.fileId}).subscribe(res3 => {
         this.router.navigate([`/recipeView/${id}`]);
       }, err => {
@@ -161,13 +178,18 @@ export class RecipeEditComponent implements OnInit {
         }
       });
     }
+    }
+
+
   }
 
   get kcalTot() {
-    const kcal = this.ingredientsList.map((item: any[]) => item[2]).reduce((acc: number, val: number) => acc + val);
-    const weight = this.ingredientsList.map((item: any[]) => item[1]).reduce((acc: number, val: number) => acc + val);
-    const kcalTot = ((kcal * 100) / weight).toFixed(2);
-    return kcalTot;
+    return this.ingredientsList.map((item: any[]) => item[2]).reduce((acc: number, val: number) => acc + val).toFixed(2);
+
+  }
+
+  get weigthTot() {
+    return this.ingredientsList.map((item: any[]) => item[1]).reduce((acc: number, val: number) => acc + val).toFixed(2);
   }
 
 }
