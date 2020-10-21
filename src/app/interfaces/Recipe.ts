@@ -8,4 +8,5 @@ export interface Recipe {
   preparation: [string];
   filePath: string;
   fileId: string;
+  isCopy: boolean;
 }
