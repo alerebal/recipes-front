@@ -7,8 +7,8 @@
         <div class="card-body text-center m-auto p-0">
           <h4 class="card-title"><a [routerLink]="['/recipeView/' + recipe._id]">{{recipe.name}}</a></h4>
           <hr>
-          <h6 class="card-subtitle m-2"><span>{{recipe.kcalTot * 100 / recipe.weightTot | number: '1.0-0'}}</span> kcal per 100 grs</h6>
           <h6 class="card-subtitle m-2"><span>{{recipe.kcalTot / recipe.servings | number: '1.0-0'}}</span> kcal per serving</h6>
+          <h6 class="card-subtitle m-2" style="font-size: xx-small;"><span>{{recipe.kcalTot * 100 / recipe.weightTot | number: '1.0-0'}}</span> kcal per 100 grs</h6>
           <hr>
             <div class="overflow-hidden mt-4" style="height: 200px;" *ngIf="recipe.filePath">
               <a [routerLink]="['/recipeView/' + recipe._id]">
