@@ -5,7 +5,7 @@
     <div class="col-md-6 col-lg-4 m-auto p-0" *ngFor="let recipe of recipes" >
       <div class="card border-light mb-4" >
         <div class="card-body text-center m-auto p-0">
-          <h4 class="card-title"><a [routerLink]="['/recipeView/' + recipe._id]">{{recipe.name}}</a></h4>
+          <h4 class="card-title"><span class="title" [routerLink]="['/recipeView/' + recipe._id]">{{recipe.name}}</span></h4>
           <hr>
           <h6 class="card-subtitle m-2"><span>{{recipe.kcalTot / recipe.servings | number: '1.0-0'}}</span> kcal per serving</h6>
           <h6 class="card-subtitle m-2" style="font-size: xx-small;"><span>{{recipe.kcalTot * 100 / recipe.weightTot | number: '1.0-0'}}</span> kcal per 100 grs</h6>
@@ -15,6 +15,7 @@
                 <img src="{{recipe.filePath}}" class="img-fluid " >
               </a>
             </div>
+           <hr class="mt-4">
         </div>
       </div >
     </div>

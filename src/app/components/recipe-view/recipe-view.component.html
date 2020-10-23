@@ -28,11 +28,13 @@
               </tbody>
             </table>
           </div>
-          <div class="mt-4">
-            <h4 class="mb-4">Preparation</h4>
-            <p *ngFor="let item of recipe.preparation" class="text-left p-4">
+          <div class="mt-5">
+            <hr>
+            <h4 class="mt-4">Preparation</h4>
+            <p *ngFor="let item of recipe.preparation" class="text-left">
               {{item}}
             </p>
+            <hr>
           </div>
           <div class="text-center m-4" *ngIf="isUserRecipe; else copy">
             <button (click)="editRecipe(recipe._id)" class="btn btn-primary btn-sm m-2">Edit recipe</button>

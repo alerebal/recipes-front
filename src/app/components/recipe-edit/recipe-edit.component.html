@@ -38,7 +38,7 @@
                   <td #ingre>{{item[0].name}}</td>
                   <td ><input [value]="item[1]"  #newWeight (change)='onEdit(i, newWeight.value, item[0].kcal);'></td>
                   <td>
-                    <button type="button" class="btn btn-danger btn-sm" (click)='onDelete(i)'>Delete</button>
+                    <button type="button" class="btn btn-danger btn-sm m-1" (click)='onDelete(i)'>Delete</button>
                   </td>
                 </tr>
               </tbody>
