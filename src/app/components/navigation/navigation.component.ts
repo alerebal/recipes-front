@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavigationComponent implements OnInit {
 
+  title = 'Vegetarian Recipes';
 
   constructor(
     private authService: AuthService
