@@ -1,10 +1,10 @@
 <!-- User Recipes -->
 <div class="container">
-  <div class="row" *ngIf="userRecipes">
+  <div class="row" *ngIf="userRecipes"[@showing] >
       <ng-container *ngIf="userRecipes.length === 0; else recipesUser">
         <p class="lead m-auto" *ngIf="user">Welcome {{user.name}}, you do not have recipes yet, create one <a [routerLink]="['/recipeForm']">here.</a></p>
       </ng-container>
-      <ng-template #recipesUser>
+      <ng-template #recipesUser >
         <div class="col-md-6 col-lg-4 m-auto p-0" *ngFor="let recipe of userRecipes" >
           <div class="card border-light mb-4" >
             <div class="card-body text-center  m-auto p-0">

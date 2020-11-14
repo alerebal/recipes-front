@@ -1,15 +1,30 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
+import { trigger, transition, animate, style, state, query, stagger, keyframes } from '@angular/animations';
 
 import { Product } from 'src/app/interfaces/Product';
 import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-products',
+  animations: [
+    trigger('animeIngre', [
+      transition('* => *', [
+        query('.ingredient', [
+          style({opacity: 0, transform: 'translateY(-30px)'}),
+          stagger(50, animate('.5s', keyframes([
+            style({opacity: .2, transform: 'translateY(-10px)'}),
+            style({opacity: .6, transform: 'translateY(30px)'}),
+            style({opacity: 1, transform: 'translateY(0px)'}),
+          ])))
+        ], {limit: 15, optional: true})
+      ]),
+    ])],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
 
+  @HostBinding('@animeIngre')
   ingredients: Product;
   userIngredients: Product;
   newIngredient = false;
