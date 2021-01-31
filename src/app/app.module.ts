@@ -21,6 +21,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { UserRecipesComponent } from './components/user-recipes/user-recipes.component';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
     FooterComponent,
     SignInComponent,
     SignUpComponent,
-    UserRecipesComponent
+    UserRecipesComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
