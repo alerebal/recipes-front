@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+.mainContainer {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .container {
   min-height: 600px;
 }
@@ -51,6 +57,13 @@ input {
   text-align: center;
 }
 
+.nav-bar {
+  position: relative;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 33;
+}
 
 #weight {
   width: 20%;

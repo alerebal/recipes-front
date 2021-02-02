@@ -27,7 +27,7 @@ export class UserRecipesComponent implements OnInit {
   @HostBinding('@showing')
   userId: string;
   user: User;
-  userRecipes: Recipe;
+  userRecipes: any;
 
   constructor(
     private authService: AuthService,

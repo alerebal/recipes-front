@@ -12,7 +12,7 @@ export class NavigationComponent implements OnInit {
   title = 'Vegetarian Recipes';
 
   constructor(
-    private authService: AuthService
+    public authService: AuthService
   ) { }
 
   ngOnInit() {

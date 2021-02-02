@@ -17,7 +17,7 @@ export class ProductFormComponent implements OnInit, AfterViewInit {
     kcal: this.fb.control('', [Validators.required, validatorNumber(/[^0-9]/)])
   });
   @Output() newProductName = new EventEmitter<string>();
-  @ViewChild('nameFocus', {static: false}) nameFocus: ElementRef;
+  @ViewChild('nameFocus') nameFocus: ElementRef;
   msg: string;
   errorName = false;
 

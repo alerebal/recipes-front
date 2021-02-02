@@ -18,7 +18,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     confirmPassword: this.fb.control('', [Validators.required, Validators.minLength(4)])
   });
 
-  @ViewChild('emailFocus', {static: false}) emailFocus: ElementRef;
+  @ViewChild('emailFocus') emailFocus: ElementRef;
   errorMsg: string;
   errorServer: string;
 

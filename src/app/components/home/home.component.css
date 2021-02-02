@@ -3,3 +3,9 @@ span {
   font-weight: bold;
   cursor: pointer
 }
+
+.icon {
+  width: 60%;
+  margin: 0 auto;
+  opacity: 80%;
+}
