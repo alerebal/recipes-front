@@ -10,7 +10,7 @@ import { Recipe } from '../../interfaces/Recipe';
   styleUrls: ['./recipes.component.css'],
   animations: [
     trigger('showing', [
-      transition('* => *', [
+      transition('void => *', [
           query('.card', [
             style({opacity: 0, transform: 'translateY(100%)'}),
           stagger(300, [animate('1s ease-in-out', style({opacity: 1, transform: 'none'}))])

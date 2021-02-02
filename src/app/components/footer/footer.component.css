@@ -1,9 +1,16 @@
 .footerContainer {
   min-height: auto;
   margin-top: 30px;
+  background-color: rgb(59, 59, 59);
+  color: white;
 }
 
 img {
   width: 100%;
 }
+
+a {
+  color: white;
+}
+
 

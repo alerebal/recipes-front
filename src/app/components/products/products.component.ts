@@ -8,7 +8,7 @@ import { ProductsService } from '../../services/products.service';
   selector: 'app-products',
   animations: [
     trigger('animeIngre', [
-      transition('* => *', [
+      transition('void => *', [
         query('.ingredient', [
           style({opacity: 0, transform: 'translateY(-30px)'}),
           stagger(50, animate('.5s', keyframes([
