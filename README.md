@@ -1,6 +1,11 @@
 # RecipesAngular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3. and updated to angular 9.1.13
+I made this app because my wife is a cooking lover, has
+              many recipes, and was on a low calorie diet, and she needed a
+              quick way to save and find all her recipes, because she does not
+              have much time to cook due to her work. I will continue working to
+              improve it, I like the result I have at this time.
 
 ## Development server
 
